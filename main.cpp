@@ -57,6 +57,12 @@ struct Pallette {
 	void coklat(){
 		rgb(139,106,103);
 	}
+	void cokelat2(){
+        rgb(231, 168, 65);
+	}
+	void cokelat3(){
+        rgb(255, 215, 149);
+	}
 };
 
 Pallette painter;
@@ -190,6 +196,53 @@ void kincirAngin(float scale, float posX, float posY){
 	glPopMatrix();
 }
 
+void pohon2(float posX, float posY, float scale){
+    glPushMatrix();
+    glTranslatef(posX, posY, 0.0);
+    glScalef(scale, scale, 0.0);
+
+    //batang
+    painter.cokelat2();
+    persegi(0, 0.5, 1.25, 0, 0);
+
+    //daun
+    painter.hijau();
+    segitiga(0, 5, 3, 0, 0);
+    segitiga(0, 5, 3, 0, 1);
+    segitiga(0, 5, 3, 0, 2);
+
+    glPopMatrix();
+}
+
+void rumah(float posX, float posY, float scale){
+    glPushMatrix();
+    glTranslatef(posX, posY, 0.0);
+    glScalef(scale, scale, 0.0);
+
+    //cerobong asap
+    painter.biru();
+    persegi(0, 3, 5, 0, 43);
+
+    //tembok depan
+    painter.putih();
+    segitiga(0, 30, 20, -26, 20);
+    persegi(0, 13, 10, -26, 10);
+
+    //tembok samping
+    painter.hampirPutih();
+    persegi(0, 19, 10, 6, 10);
+
+    //atap
+    painter.cokelat3();
+    segitigaSiku(180, 20, 20, -20, 40, 1);
+    persegi(0, 10, 10, 0, 30);
+    persegi(53, 12, 1.5, -35, 30);
+    segitigaSiku(0, 20, 20, 20, 20, 1);
+
+    glEnd();
+    glPopMatrix();
+}
+
 void kapal(float scale, float posX, float posY){
 	glPushMatrix();
 	glScalef(scale, scale, 1.0);
@@ -281,12 +334,17 @@ void render(void) {
     	//KAPAL
     	kapal(0.5, 280.0, -500.0);
 
+    //Tembok
+    rumah(20, 20, 2);
+    pohon2(100, 150, 20);
     //AWAN dari kiri->kanan
     awan(1.25, -220.0, 120.0);
     awan2(1., -100.0, 285.0);
     awan(0.8, 90.0, 225.0);
     awan2(1.5, 180.0, 160.0);
     glFlush();
+
+
 }
 
 int main(int argc, char* argv[]) {
