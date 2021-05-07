@@ -173,6 +173,7 @@ void gunung(float scale, float posX, float posY){
 	glEnd();
 	glPopMatrix();
 }
+
 void gunung2(float scale, float posX, float posY){
 	glPushMatrix();
 	glScalef(scale, scale, 1.0);
@@ -188,6 +189,7 @@ void gunung2(float scale, float posX, float posY){
 	glEnd();
 	glPopMatrix();
 }
+
 void pohon(float scale, float posX, float posY){
 	glPushMatrix();
 	glScalef(scale, scale, 1.0);
