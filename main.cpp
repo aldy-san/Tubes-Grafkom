@@ -1,6 +1,7 @@
 #include <gl/glut.h>
 #include <stdlib.h>
 #include <Math.h>
+#include <iostream>
 #define PI 3.14159265f
 void rgb(float red, float green, float blue){
 	red = red/255;
@@ -14,6 +15,9 @@ struct Pallette {
     }
     void biru(){
     	rgb(39, 60, 117);
+	}
+	void kaca(){
+		rgb(165,241,246);
 	}
     void hijau() {
         rgb(39, 174, 96);
@@ -45,6 +49,9 @@ struct Pallette {
     void abuabu(){
     	rgb(149, 165, 166);
 	}
+	void abuabuMuda(){
+    	rgb(220, 221, 225);
+	}
 	void abuabuTua(){
     	rgb(127, 140, 141);
 	}
@@ -67,7 +74,10 @@ struct Pallette {
         rgb(231, 168, 65);
 	}
 	void cokelat3(){
-        rgb(255, 215, 149);
+        rgb(139,90,43);
+	}
+	void cokelat4(){
+		rgb(205,133,20);
 	}
 };
 
@@ -190,22 +200,10 @@ void gunung2(float scale, float posX, float posY){
 	glPopMatrix();
 }
 
-void pohon(float scale, float posX, float posY){
-	glPushMatrix();
-	glScalef(scale, scale, 1.0);
-	glTranslatef(posX, posY, 0.0);
-	painter.coklat();
-	persegi(0, 10, 30, 0.0, 0.0);
-	painter.hijauTua();
-	segitiga(0, 50, 100, 0., 10);
-	glEnd();
-	glPopMatrix();
-}
-
 void kincirAngin(float scale, float posX, float posY){
 	glPushMatrix();
-	glScalef(scale, scale, 1.0);
 	glTranslatef(posX, posY, 0.0);
+	glScalef(scale, scale, 1.0);
 	painter.putih();
 	persegi(0, 12, 100, 0.0, 0.0);
 	painter.abuabu();
@@ -214,6 +212,18 @@ void kincirAngin(float scale, float posX, float posY){
 	segitiga(0, 30, 120, 0.0, 120);
 	segitiga(120, 30, 120, 0.0, 120);
 	segitiga(-120, 30, 120, 0.0, 120);
+	glEnd();
+	glPopMatrix();
+}
+
+void pohon(float scale, float posX, float posY){
+	glPushMatrix();
+	glScalef(scale, scale, 1.0);
+	glTranslatef(posX, posY, 0.0);
+	painter.coklat();
+	persegi(0, 10, 30, 0.0, 0.0);
+	painter.hijauTua();
+	segitiga(0, 50, 100, 0., 10);
 	glEnd();
 	glPopMatrix();
 }
@@ -229,67 +239,133 @@ void pohon2(float scale, float posX, float posY){
 
     //daun
     painter.hijauTua();
-    segitiga(0, 4, 3, 0, 0);
-    segitiga(0, 4, 3, 0, 1);
+    segitiga(0, 4, 3, 0, -0.5);
+    segitiga(0, 4, 3, 0, 0.75);
     segitiga(0, 4, 3, 0, 2);
 
     glPopMatrix();
 }
 
-void rumah(float posX, float posY, float scale){
+void pohon3(float scale, float posX, float posY){
     glPushMatrix();
     glTranslatef(posX, posY, 0.0);
     glScalef(scale, scale, 0.0);
 
-    //cerobong asap
-    painter.biru();
+    //daun
+    painter.hijauTua();
+    segitiga(0, 3, 3, 0, -0.5);
+    segitiga(0, 3, 3, 0, 0.75);
+    segitiga(0, 3, 3, 0, 2);
+
+    glPopMatrix();
+}
+
+void rumah(float scale, float posX, float posY, int hadap, int color){
+	
+    glPushMatrix();
+    glTranslatef(posX, posY, 0.0);
+    if(hadap == 0){
+    	//KIRI
+    	glScalef(scale, scale, 0.0);
+	} else {
+		//KANAN
+		glScalef(-scale, scale, 0.0);
+	}
+    
+    //CEROBONG ASAP
+    painter.cokelat2();
     persegi(0, 3, 5, 0, 43);
 
-    //tembok depan
+    //TEMBOK depan
     painter.putih();
     segitiga(0, 30, 20, -26, 20);
     persegi(0, 13, 10, -26, 10);
 
-    //tembok samping
+    //TEMBOK samping
     painter.hampirPutih();
     persegi(0, 19, 10, 6, 10);
-
-    //atap
-    painter.cokelat3();
+	
+	//KACA
+	painter.cokelat4();
+	persegi(0, 5, 5, -2, 12);
+	painter.kaca();
+	persegi(0, 4, 4, -2, 12);
+	
+	painter.cokelat4();
+	persegi(0, 5, 5, 12, 12);
+	painter.kaca();
+	persegi(0, 4, 4, 12, 12);
+	
+    //ATAP
+    if(color == 0){
+    	painter.cokelat4();
+	} else if(color == 1){
+		painter.cokelat3();
+	}
     segitigaSiku(180, 20, 20, -20, 40, 1);
     persegi(0, 10, 10, 0, 30);
     persegi(53, 12, 1.5, -35, 30);
     segitigaSiku(0, 20, 20, 20, 20, 1);
-
+	
+	//PINTU
+	persegi(0, 5, 10, -27, 10);
+	painter.abuabuMuda();
+	lingkaran(2, -25, 10);
     glEnd();
     glPopMatrix();
 }
 
-void kapal(float scale, float posX, float posY){
-	glPushMatrix();
-	glScalef(scale, scale, 1.0);
-	glTranslatef(posX, posY, 0.0);
-	//ATAS kapal
-	painter.abuabu();
-	persegi(0, 100, 50, 200, 100);
-	segitigaSiku(0, 100, 100, 50.0, 50, 0);
-	persegi(0, 15, 40, 220, 180);
-		//JENDELA
-		painter.putih();
-		persegi(0, 20, 20, 160, 110);
-		persegi(0, 20, 20, 230, 110);
-	//BADAN kapal
-	painter.abuabuTua();
-	persegi(0, 250, 60, 0.0, 0.0);
-	segitigaSiku(90, 120, 120, -250, 0.0,0);
-	segitigaSiku(-90, 120, 120, 250, 0.0,1);
-	painter.biru();
-	persegi(0, 250, 10, 0.0, -70);
+void gereja(float scale, float posX, float posY, int hadap){
+    glPushMatrix();
+    glTranslatef(posX, posY, 0.0);
+    if(hadap == 0){
+    	//KIRI
+    	glScalef(scale, scale, 0.0);
+	} else {
+		//KANAN
+		glScalef(-scale, scale, 0.0);
+	}
+    //tembok depan
+    painter.putih();
+    segitiga(0, 30, 20, -26, 25);
+    persegi(0, 13, 13, -26, 13);
+	
+    //tembok samping
+    painter.hampirPutih();
+    persegi(0, 26, 13, 13, 13);
+
+    //atap
+    painter.cokelat3();
+    segitigaSiku(180, 20, 20, -20, 45, 1);
+    persegi(0, 16, 10, 6, 35);
+    persegi(53, 12, 1.5, -35, 35);
+    segitigaSiku(0, 20, 20, 32, 25, 1);
+	
+	//pintu
+	persegi(0, 5, 8, -27, 8);
+	painter.abuabuMuda();
+	lingkaran(2, -25, 8);
+	//kaca
+	painter.cokelat3();
+	persegi(0,3.1,8.1,-2,13);
+	persegi(0,3.1,8.1,8,13);
+	persegi(0,3.1,8.1,18,13);
+	persegi(0,3.1,8.1,28,13);
+	painter.kaca();
+	persegi(0,2.9,8,-2,13);
+	persegi(0,2.9,8,8,13);
+	persegi(0,2.9,8,18,13);
+	persegi(0,2.9,8,28,13);
+	
+	//salib
 	painter.putih();
-	persegi(0, 50, 12, -195, -40);
-	segitigaSiku(90, 24, 24, -245, -40,0);
-	glEnd();
-	glPopMatrix();
+	persegi(0, 5, 12, -27, 40);
+	painter.cokelat3();
+    segitiga(0,13,13,-27,49);
+    persegi(0, 1, 7, -27, 62);
+    persegi(0, 5, 1, -27, 65);
+    glEnd();
+    glPopMatrix();
 }
 
 void initGL(){
@@ -315,23 +391,50 @@ void render(void) {
     //BUKIT
     painter.hijauTua2();
     persegi(0, 700, 100, 0, -75);
+	    //POHON
+		for (int i = 0; i < 40; i++){
+			pohon(0.3, i*32, (rand() % 300) - 300);
+		}
+		for (int i = 0; i < 10; i++){
+			pohon(0.3, i*50, (rand() % 300) - 300);
+		}
+		for (int i = 0; i < 30; i++){
+			pohon(0.3, i*-40, (rand() % 200) - 130);
+		}
+		
     painter.hijau3();
-    lingkaran(275, -100, -270);
+    lingkaran(600, -320, -600);
+	    //KINCIR ANGIN
+		kincirAngin(0.5, -290, -145);
+		kincirAngin(0.3, -330, -170);
+		kincirAngin(0.2, -250, -170);
 	painter.hijau2();
-    lingkaran(300, 150, -400);
+    lingkaran(300, 150, -430);
     painter.hijau();
-    lingkaran(500, -180, -600);
+    lingkaran(500, -180, -680);
     
-//    lingkaran(130, 90, -170);
-//
-//    //Tembok
-//    rumah(20, 20, 2);
-    pohon2(60, 350, -300);
+    //BANGUNAN
+    rumah(1.4, -220, -225, 1, 1);
+    rumah(1.6, -30, -305, 0, 0);
+    
+	gereja(1.3, 160, -140, 0);
+    rumah(1.2, 220, -225, 0, 1);
+    
+    rumah(1.0, -230, -55, 1, 0);
+    rumah(1.1, -80, -125, 0, 1);
+    
+	
     //AWAN dari kiri->kanan
     awan(1.25, -220.0, 120.0);
     awan2(1., -100.0, 285.0);
     awan(0.8, 90.0, 225.0);
     awan2(1.5, 180.0, 160.0);
+    
+	
+	
+//		pohon2(10, 50, -300);
+//		pohon3(10, 150, -300);
+    pohon2(50, 350, -300);
     glFlush();
 }
 
